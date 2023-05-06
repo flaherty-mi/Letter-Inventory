@@ -1,67 +1,75 @@
-// Meghan Flaherty & Adam Curtin
-// CS145
-// Letter Inventory [lab 3]
-// this program can be used to keep track of an inventory of letters
-
 public class LetterInventory {
-    private char letter;
-    private int value;
-    private String data;
+    private static final int ALPHABET_SIZE = 26;
+    private int[] counts;
+    private int size;
 
-    // constructor -> computes how many of each letter are in a string
-    public LetterInventory() {
-
+    public LetterInventory(String data) {
+        counts = new int[ALPHABET_SIZE];
+        for (char ch : data.toCharArray()) {
+            if (Character.isLetter(ch)) {
+                counts[Character.toLowerCase(ch) - 'a']++;
+                size++;
+            }
+        }
     }
 
-    //returns a count of how many of this letter are in the inventory
-    // can be lower or uppercase
-    // if non alphabetic -> throw illegalArgumentException
     public int get(char letter) {
-        return letter;
+        if (!Character.isLetter(letter)) {
+            throw new IllegalArgumentException("Not a letter: " + letter);
+        }
+        return counts[Character.toLowerCase(letter) - 'a'];
     }
 
-    // sets the count for the letter to the value
     public void set(char letter, int value) {
-        this.letter = letter;
-        this.value = value;
+        if (!Character.isLetter(letter)) {
+            throw new IllegalArgumentException("Not a letter: " + letter);
+        }
+        int index = Character.toLowerCase(letter) - 'a';
+        if (value < 0) {
+            throw new IllegalArgumentException("Negative value: " + value);
+        }
+        size += value - counts[index];
+        counts[index] = value;
     }
 
-    // returns sum of all of the counts in this inventory
-    // should store the size rather than having to compute
-    // each time method is called
     public int size() {
-
-        return 0;
-        // ^ 0 is just to keep errors quiet
+        return size;
     }
 
-    // returns true if inventory is empty
-    public Object isEmpty() {
-
-        return null;
+    public boolean isEmpty() {
+        return size == 0;
     }
 
-    // returns a string representation of the inventory
-    // with letters all lowercase + in sorted order w/ square brackets
-    // num of occurences should match count in inventory
+    @Override
     public String toString() {
-
-        return null;
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < ALPHABET_SIZE; i++) {
+            for (int j = 0; j < counts[i]; j++) {
+                sb.append((char) (i + 'a'));
+            }
+        }
+        sb.append("]");
+        return sb.toString();
     }
 
-    // constructs and returns a new LetterInventory object that
-    // represents the sum of this letter inventory +
-    // the other given LetterInventory
     public LetterInventory add(LetterInventory other) {
-
-        return other;
+        LetterInventory sum = new LetterInventory("");
+        for (int i = 0; i < ALPHABET_SIZE; i++) {
+            sum.counts[i] = counts[i] + other.counts[i];
+            sum.size += sum.counts[i];
+        }
+        return sum;
     }
 
-    // constructs and returns a new LetterInventory object that
-    // represents the result of subtracting the other inventory from this one
     public LetterInventory subtract(LetterInventory other) {
-
-        return other;
+        LetterInventory diff = new LetterInventory("");
+        for (int i = 0; i < ALPHABET_SIZE; i++) {
+            diff.counts[i] = counts[i] - other.counts[i];
+            if (diff.counts[i] < 0) {
+                return null;
+            }
+            diff.size += diff.counts[i];
+        }
+        return diff;
     }
-
-}
+} // end LetterInventory
