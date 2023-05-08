@@ -2,6 +2,7 @@
 // CS145
 // Letter Inventory [lab 3]
 // this program can be used to keep track of an inventory of letters
+// and returns specific contents and stats of the input string
 import java.util.*;
 
 
@@ -9,7 +10,7 @@ import java.util.*;
 public class LetterInventory extends LetterInventoryTest{
     private static final int ALPHABET_SIZE = 26;
     private int[] counts;
-    private int size;
+    private int size; 
 
     // constructor for the class
     public LetterInventory(String data) {
@@ -41,6 +42,7 @@ public class LetterInventory extends LetterInventoryTest{
             }
     }
 
+    // method that sends the input string to other methods + prints output
     public static void Execute() {
         System.out.print("Enter a word or sentence: ");
         Scanner scan = new Scanner(System.in);
@@ -53,6 +55,7 @@ public class LetterInventory extends LetterInventoryTest{
            promptAgain();
     }
 
+    // second prompt menu for fluid program use
     public static void promptAgain() {
         Scanner inputTwo = new Scanner(System.in);
         System.out.println("Would you like to enter another word?");
